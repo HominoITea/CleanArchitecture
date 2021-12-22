@@ -1,0 +1,230 @@
+﻿using Core.Converters;
+using Core.Interfaces;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Buffers;
+using System.Buffers.Binary;
+
+#if NETCOREAPP3_1
+using System.Runtime.Intrinsics.X86;
+#endif
+
+namespace Core.Entities.Models.Columns
+{
+    [StructLayout(LayoutKind.Explicit, Size = 24)]
+    public readonly struct City : IComparable<City>, IColumn
+    {
+        [FieldOffset(0)]
+        public readonly sbyte a;
+        [FieldOffset(1)]
+        public readonly sbyte b;
+        [FieldOffset(2)]
+        public readonly sbyte c;
+        [FieldOffset(3)]
+        public readonly sbyte d;
+        [FieldOffset(4)]
+        public readonly sbyte e;
+        [FieldOffset(5)]
+        public readonly sbyte f;
+        [FieldOffset(6)]
+        public readonly sbyte g;
+        [FieldOffset(7)]
+        public readonly sbyte h;
+        [FieldOffset(8)]
+        public readonly sbyte i;
+        [FieldOffset(9)]
+        public readonly sbyte j;
+        [FieldOffset(10)]
+        public readonly sbyte k;
+        [FieldOffset(11)]
+        public readonly sbyte l;
+        [FieldOffset(12)]
+        public readonly sbyte m;
+        [FieldOffset(13)]
+        public readonly sbyte n;
+        [FieldOffset(14)]
+        public readonly sbyte o;
+        [FieldOffset(15)]
+        public readonly sbyte p;
+        [FieldOffset(16)]
+        public readonly sbyte r;
+        [FieldOffset(17)]
+        public readonly sbyte s;
+        [FieldOffset(18)]
+        public readonly sbyte t;
+        [FieldOffset(19)]
+        public readonly sbyte q;
+        [FieldOffset(20)]
+        public readonly sbyte u;
+        [FieldOffset(21)]
+        public readonly sbyte v;
+        [FieldOffset(22)]
+        public readonly sbyte w;
+        [FieldOffset(23)]
+        public readonly sbyte x;
+
+        //public unsafe int UnsafeCompare()
+        //{
+        //    Binary binary = new Binary();
+        //    var structure = this;
+        //    var handle = GCHandle.Alloc(structure, GCHandleType.Pinned);
+        //    try
+        //    {
+        //        IntPtr pointer = handle.AddrOfPinnedObject();
+        //        if(structure.Equals((City)Marshal.PtrToStructure(pointer, typeof(City))) {
+        //            return 0;
+        //        }
+        //        if (structure > (City)Marshal.PtrToStructure(pointer, typeof(City)) {
+        //            return 0;
+        //        }
+        //    }
+        //    finally
+        //    {
+        //        handle.Free();
+        //    }
+        //    return 0;
+        //}
+        public unsafe int CompareTo(City match)
+        {
+            //var mathedBytes = new byte[24];
+            //var thisObjBytes = new byte[24];
+
+            var matchedPtr = Marshal.AllocHGlobal(sizeof(City));
+            var thisObjPtr = Marshal.AllocHGlobal(sizeof(City));
+
+            Marshal.StructureToPtr(match, matchedPtr, true);
+            Marshal.StructureToPtr(this, thisObjPtr, true);
+
+            //Marshal.Copy(matchedPtr, mathedBytes, 0, 24);
+            //Marshal.Copy(thisObjPtr, thisObjBytes, 0, 24);
+
+
+
+            //#if NETCOREAPP3_1
+
+            if (Avx2.IsSupported)
+            {
+                var str = (City)Marshal.PtrToStructure(matchedPtr, typeof(City));
+                var res = Compare24((byte*)matchedPtr.ToPointer(), (byte*)thisObjPtr.ToPointer());
+                Marshal.FreeHGlobal(matchedPtr);
+                Marshal.FreeHGlobal(thisObjPtr);
+                return res;
+
+            }
+            //            else if (Sse2.IsSupported)
+            //            {
+            //                return Compare128(b0, b1, arr0.Length);
+            //            }
+            //            else
+            //#endif
+            //            {
+            //                return Compare64(b0, b1, arr0.Length);
+            //            }
+            //        }
+            throw new Exception();
+        }
+        //public static unsafe City FromByte(byte b) => Avx2.BroadcastScalarToVector256(&b);
+        public static unsafe int Compare256(byte* b0, byte* b1)
+        {
+            //byte* lastAddr = b0 + length;
+            //byte* lastAddrMinus24 = lastAddr - 24;
+            //const int mask = -1;
+            //while (b0 < lastAddrMinus24) // unroll the loop so that we are comparing 128 bytes at a time.
+            //{
+            var res = Avx2.CompareEqual(Avx.LoadVector256(b0), Avx.LoadVector256(b1));
+                if (Avx2.MoveMask(res) < 0)
+                {
+                    return -1;
+                }
+            if (Avx2.MoveMask(res) < 0)
+            {
+                long intNumber = 10;
+                object o = intNumber;
+                int longNumber = (int)(long)intNumber;
+                return 1;
+            }
+
+            //if (Avx2.MoveMask(Avx2.CompareEqual(Avx.LoadVector128(b0 + 6), Avx.LoadVector128(b1 + 6))) != mask)
+            //{
+            //    return false;
+            //}
+            //if (Avx2.MoveMask(Avx2.CompareEqual(Avx.LoadVector128(b0 + 18), Avx.LoadVector128(b1 + 18))) != mask)
+            //{
+            //    return false;
+            //}
+
+            //b0 += 24;
+            //b1 += 24;
+            //}
+            //while (b0 < lastAddr)
+            //{
+            //    if (*b0 != *b1)
+            //    {
+            //        return false;
+            //    }
+            //    b0++;
+            //    b1++;
+            //}
+            return 0;
+        }
+        public unsafe int Compare24(byte* b0, byte* b1)
+        {
+            //byte* lastAddr = b0 + length;
+            //byte* lastAddrMinus32 = lastAddr - 24;
+            //while (b0 < lastAddrMinus32) // unroll the loop so that we are comparing 32 bytes at a time.
+            //{
+
+            if (*(ulong*)b0 < *(ulong*)b1)
+                return -1;
+            if (*(ulong*)b0 > *(ulong*)b1)
+                return 1;
+            if (*(ulong*)(b0 + 8) < *(ulong*)(b1 + 8))
+                return -1;
+            if (*(ulong*)(b0 + 8) > *(ulong*)(b1 + 8))
+                return 1;
+            if (*(ulong*)(b0 + 16) < *(ulong*)(b1 + 16))
+                return -1;
+            if (*(ulong*)(b0 + 16) > *(ulong*)(b1 + 16))
+                return 1;
+            //b0 += 24;
+            //b1 += 24;
+            //}
+            //while (b0 < lastAddr)
+            //{
+            //    if (*b0 != *b1) return false;
+            //    b0++;
+            //    b1++;
+            //}
+            return 0;
+        }
+        //public int CompareTo(City match)
+        //{
+        //    var result = 0;
+        //    if (StructuralComparisons.StructuralEqualityComparer.Equals(match, this))
+        //    {
+        //        return result;
+        //    }
+
+        //    var thisObjectFields = GetType().GetFields().AsSpan();
+        //    var matchObjectField = match.GetType().GetFields().AsSpan();
+
+        //    for (int i = 4; i < thisObjectFields.Length; ++i)
+        //    {
+        //        var original = (sbyte)thisObjectFields[i].GetValue(this);
+        //        var matched = (sbyte)matchObjectField[i].GetValue(match);
+        //        var compareResult = original.CompareTo(matched);
+
+        //        if (compareResult != 0)
+        //        {
+        //            return compareResult;
+        //        }
+        //    }
+        //    return result;
+        //}
+    }
+}
+

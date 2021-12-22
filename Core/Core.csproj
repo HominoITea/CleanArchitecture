@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Entities\GeoDataBinary.cs" />
+    <Compile Remove="Entities\LocationChar.cs" />
+    <Compile Remove="Entities\LocationFixed.cs" />
+    <Compile Remove="Interfaces\IContext.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Entities\Models\Columns\City.cs.temp" />
+  </ItemGroup>
+
+</Project>
