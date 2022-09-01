@@ -1,9 +1,6 @@
-﻿using Core.Entities.Models.Columns;
+﻿using Core.Entities.Models;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 
 namespace Infrastructure.Services
 {
@@ -52,146 +49,263 @@ namespace Infrastructure.Services
         //    return range;
         //}
 
-        public static (int left, int middle, int rigth) BinarySearch<TEntity, TKey>(in ReadOnlySpan<TEntity> source, TKey value, bool isUpper = false) where TEntity : IComparable<TKey>
+        public static int BinarySearch<TKey, TEntity>(in ReadOnlySpan<CityIndex> indices, in ReadOnlySpan<TEntity> source, 
+            int elementSize, TKey value, bool isUpper, int firstIndex = 0) where TEntity : IComparable<TKey>
         {
-             
-            var lastIndex = source.Length - 1;
-            var range = (left: 0, middle: lastIndex / 2, right: lastIndex);
-            if (!isUpper)
+            var middle = 0;
+            var compare = 0;
+            var left = firstIndex;
+            var right = indices.Length - 1;
+            while (left < right)
             {
-                if (source[range.left].CompareTo(value) == 0)
+                middle = left + (right - left) / 2;
+                compare = source[(int)indices[middle].Offset / elementSize].CompareTo(value);
+
+                if (compare == 0)
                 {
-                    return range;
+                    if (isUpper)
+                    {
+                        left = (middle == right) ? --middle : middle;
+                    }
+                    else
+                    {
+                        right = (middle == ++left) ? --middle : ++middle;
+                    }
+                }
+                else
+                {
+                    if (compare > 0)
+                    {
+                        right = isUpper ? --middle : middle;
+                    }
+                    else
+                    {
+                        left = isUpper ? --middle : ++middle;
+                    }
                 }
             }
-            else
+            return isUpper ? left : right;
+        }
+
+        public static int BinarySearch2<TKey, TEntity>(in ReadOnlySpan<CityIndex> indices, in ReadOnlySpan<TEntity> source,
+            int elementSize, TKey value, bool isUpper, int firstIndex = 0) where TEntity : IComparable<TKey>
+        {
+            var middle = 0;
+            var compare = 0;
+            var left = firstIndex;
+            var right = indices.Length - 1;
+            while (left < right)
             {
-                if (source[range.right].CompareTo(value) == 0)
-                {
-                    return range;
-                }
-            }
-            while (range.left < range.right)
-            {
-                var compare = source[range.middle].CompareTo(value);
+                middle = left + (right - left) / 2;
+                compare = source[(int)indices[middle].Offset / elementSize].CompareTo(value);
+
                 if (compare == 0)
                 {
                     if (!isUpper)
                     {
-                        if (range.middle == range.left + 1)
-                        {
-                            return range;
-                        }
-                        range.right = range.middle + 1;
+                        left = (middle == right) ? --middle : middle;
                     }
                     else
                     {
-                        if (range.middle == range.right - 1)
-                        {
-                            return range;
-                        }
-                        range.left = range.middle - 1;                        
-                    }
-                }
-                if (!isUpper)
-                {
-                    if ((compare < 0) == isUpper)
-                    {
-                        range.right = range.middle;
-                    }
-                    else
-                    {
-                        range.left = range.middle + 1;
+                        right = (middle == ++left) ? middle : ++middle;
                     }
                 }
                 else
                 {
-                    if ((compare > 0) == isUpper)
+                    if (compare > 0)
                     {
-                        range.right = range.middle - 1;
+                        right = middle;
                     }
                     else
                     {
-                        range.left = range.middle;
+                        left = ++middle;
                     }
                 }
-                range.middle = range.left + (range.right - range.left) / 2;
             }
-            Predicate<bool> predicate = (isUpper) =>
-            {
-                return isUpper;
-            };
-            return range;
-            
+            return isUpper ? left : right;
         }
 
-        public static int LowerBoundSearch<TEntity, TKey>(in ReadOnlySpan<TEntity> source, TKey value) where TEntity : IComparable<TKey>
+        public static void LowerBound<TKey, TEntity>(in ReadOnlySpan<CityIndex> indices,
+            in ReadOnlySpan<TEntity> source, int elementSize, TKey value, Comparer comparer) where TEntity : IComparable<TKey>
         {
-            int middle;
-            int compare;
+
+        }
+
+        public static int LowerBoundSearch<TKey, TEntity>(in ReadOnlySpan<CityIndex> indices,
+            in ReadOnlySpan<TEntity> source, int elementSize, TKey value) where TEntity : IComparable<TKey>
+        {
+            var middle = 0;
+            var compare = 0;
             var left = 0;
-            var right = source.Length - 1;
-            if (source[left].CompareTo(value) == 0)
-            {
-                return left;
-            }
+            var right = indices.Length - 1;
             while (left < right)
-            {                
+            {
                 middle = left + (right - left) / 2;
-                compare = source[middle].CompareTo(value);
-                if (compare == 0)
+                compare = source[(int)indices[middle].Offset / elementSize].CompareTo(value);
+
+                if (compare >= 0)
                 {
-                    if (middle == left + 1)
-                    {
-                        return  middle;
-                    }
-                    right = middle + 1;
-                }
-                if ((compare < 0) == false)
-                {
-                    right = middle;
+                    right = (middle == left) ? middle : --middle;
                 }
                 else
-                {
-                    left = middle +  1;
+                { 
+                    left = ++middle;
                 }
             }
-
             return right;
         }
 
-        public static int UpperBoundSearch<TEntity, TKey>(in ReadOnlySpan<TEntity> source, TKey value) where TEntity : IComparable<TKey>
+
+
+        public static int UpperBoundSearch<TKey, TEntity>(ReadOnlySpan<CityIndex> indices, ReadOnlySpan<TEntity> source, int elementSize, TKey value) where TEntity : IComparable<TKey>
         {
-            int middle;
-            int compare;
             var left = 0;
-            var right = source.Length - 1;
-            if (source[right].CompareTo(value) == 0)
-            {
-                return right;
-            }
+            var middle = 0;
+            var compare = 0;
+            var right = indices.Length - 1;
             while (left < right)
-            {                
+            {
                 middle = right - (right - left) / 2;
-                compare = source[middle].CompareTo(value);
-                if (compare == 0)
+                compare = source[(int)indices[middle].Offset / elementSize].CompareTo(value);
+
+                if (compare <= 0)
                 {
-                    if (middle == right - 1)
-                    {
-                        return middle;
-                    }
-                    left = middle - 1;
-                }
-                if ((compare > 0) == true)
-                {
-                    right = middle - 1;
+                    left = (middle == right) ? middle : ++middle ;
                 }
                 else
                 {
-                    left = middle;
+                    right = --middle;
                 }
             }
             return left;
         }
+
+        public static int LowerBoundSearch2<TKey, TEntity>(ReadOnlySpan<CityIndex> indices, ReadOnlySpan<TEntity> source, int elementSize, TKey value) where TEntity : IComparable<TKey>
+        {
+            var first = 0;
+            var distance = indices.Length;
+            while (distance > 0)
+            {
+                var current = first;
+                var middle = distance / 2;
+                current += middle;
+
+                if (source[(int)indices[current].Offset / elementSize].CompareTo(value) < 0)
+                {
+                    first = ++current;
+                    distance -= ++middle;
+                }
+                else
+                {
+                    distance = middle;
+                }
+            }
+            return first;
+        }
+
+        public static int UpperBoundSearch2<TKey, TEntity>(ReadOnlySpan<CityIndex> indices, ReadOnlySpan<TEntity> source, int elementSize, TKey value) where TEntity : IComparable<TKey>
+        {
+            var first = 0;
+            var distance = indices.Length;
+            while (distance > 0)
+            {
+                var current = first;
+                var middle = distance / 2;
+                current += middle;
+
+                if (!(source[(int)indices[current].Offset / elementSize].CompareTo(value) > 0))
+                {
+                    first = ++current;
+                    distance -= ++middle;
+                }
+                else
+                {
+                    distance = middle;
+                }
+            }
+            return first;
+        }
+        //public static int LowerBoundSearch<TKey, TEntity>(in ReadOnlySpan<CityIndex> indices, in ReadOnlySpan<TEntity> source, int elementSize, TKey value) where TEntity : IComparable<TKey>
+        //{
+        //    var middle = 0;
+        //    var compare = 0;
+        //    var left = 0;
+        //    var right = indices.Length - 1;
+        //    while (left < right)
+        //    {
+        //        if (source[(int)indices[left].Offset / elementSize].CompareTo(value) == 0)
+        //        {
+        //            return left;
+        //        }
+        //        middle = left + (right - left) / 2;
+        //        compare = source[(int)indices[middle].Offset / elementSize].CompareTo(value);
+        //        if (compare == 0)
+        //        {
+        //            if (middle == left + 1)
+        //            {
+        //                return middle;
+        //            }
+        //            right = middle + 1;
+        //        }
+        //        else
+        //        {
+        //            if (!(compare < 0))
+        //            {
+        //                right = middle;
+        //            }
+        //            else
+        //            {
+        //                left = middle + 1;
+        //            }
+        //        }
+        //    }
+        //    return right;
+        //}
+
+        //public static int UpperBoundSearch<TKey, TEntity>(ReadOnlySpan<CityIndex> indices, ReadOnlySpan<TEntity> source, int elementSize, TKey value) where TEntity : IComparable<TKey>
+        //{
+        //    var left = 0;
+        //    var middle = 0;
+        //    var right = indices.Length - 1;
+        //    while (left < right)
+        //    {
+        //        middle = right - (right - left) / 2;
+        //        var rightIndex = (int)indices[right].Offset / elementSize;
+        //        var middleIndex = (int)indices[middle].Offset / elementSize;
+        //        var compare = source[middleIndex].CompareTo(value);
+
+        //        if (source[rightIndex].CompareTo(value) == 0)
+        //        {
+        //            return right;
+        //        }
+        //        if (compare == 0)
+        //        {
+        //            if (middle == right - 1)
+        //            {
+        //                return middle;
+        //            }
+        //            left = middle - 1;
+        //        }
+        //        else
+        //        {
+        //            if (compare > 0)
+        //            {
+        //                right = middle - 1;
+        //            }
+        //            else
+        //            {
+        //                left = middle;
+        //            }
+        //        }
+        //    }
+        //    return left;
+        //}
+        //private bool IsBoundFound()
+        //{
+        //    if (source[(int)indices[left].Offset / elementSize].CompareTo(value) == 0)
+        //    {
+        //        return left;
+        //    }
+        //} 
     }
 }

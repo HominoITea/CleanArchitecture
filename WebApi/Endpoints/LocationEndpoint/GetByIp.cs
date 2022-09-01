@@ -4,7 +4,7 @@ using Core.Entities;
 using Core.Entities.DTOs;
 using Core.Entities.Models;
 using Core.Interfaces;
-using Infrastructure.Repository;
+using Infrastructure.Middleware;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System;

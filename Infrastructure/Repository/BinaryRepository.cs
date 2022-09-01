@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 using Core.Entities.Models;
 
 namespace Infrastructure.Repository
-
 {
     public class BinaryRepository<T> : IAsyncRepository<T> where T: IEntity
     {       
-        protected readonly GeoDataContext _context;
-        public BinaryRepository(GeoDataContext context)
+        private readonly IContext _context;
+        public BinaryRepository(IContext context)
         {
             _context = context;
-            var res = _context.Locations.AsQueryable();            
         }
 
-        public async Task<int> GetRecordsCountAsync() 
-            => await Task.Run(() => _context.Header.Data.Records);
+        //public async Task<int> GetRecordsCountAsync()
+        //{
+        //    return await Task.Run(() => _context.Header.Data.Records);
+        //} 
 
         public void Find<T>()
         {
@@ -62,10 +62,6 @@ namespace Infrastructure.Repository
         //{
         //    _context.GetAll
         //}
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
 
         //public Dictionary<string, TStruct> GetData<TStruct>() where TStruct : struct
         //{

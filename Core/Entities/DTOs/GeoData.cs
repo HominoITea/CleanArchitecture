@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Index = Core.Entities.Models.Index;
+using CityIndex = Core.Entities.Models.CityIndex;
 
 namespace Core.Entities.DTOs
 {
@@ -10,10 +10,10 @@ namespace Core.Entities.DTOs
     {
         public IpRange[] IpRanges { get; }
         public Location[] Locations { get; }
-        private Index[] Indices { get; }
+        private CityIndex[] Indices { get; }
 
         public Header Header { get; private set; }
-        public GeoData(Header header, IpRange[] ipRanges, Location[] locations, Index[] indices)
+        public GeoData(Header header, IpRange[] ipRanges, Location[] locations, CityIndex[] indices)
         {
             Header = header;
             IpRanges = ipRanges;

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Core.Interfaces
 {
-    public interface IAsyncRepository <T> : IDisposable where T : IEntity
+    public interface IAsyncRepository <out T> where T : IEntity
     {
         //public Dictionary<string, TStruct> GetData<TStruct>() where TStruct : struct;
         public T GetHeader();
