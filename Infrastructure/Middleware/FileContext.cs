@@ -48,12 +48,13 @@ namespace Infrastructure.Middleware
             var chars = new char[24];
             var chars1 = new char[24];
             var chars2 = new char[24];
+            var chars3 = new char[24];
             //var searchString = "cit_Yzuhurebatot"; //99931 99939
             var searchString = "cit_Yzyrinorijyqotok"; //99987 99999
             var searchString2 = "cit_Ixiluza"; //49994 50004
             //var searchString1 = "cit_E A"; //17018 17054
             //var searchString = "cit_Yz Tiza "; with whitespaces (sbyte=32)
-            //var searchString1 = "cit_E "; //16872 17017
+            var searchString3 = "cit_E "; //16872 17017
             var searchString1 = "cit_A"; //0 158
             //var chars = "cit_Yxyz".ToCharArray();
             //var chars = "cit_Az L Jor".ToCharArray();
@@ -67,15 +68,21 @@ namespace Infrastructure.Middleware
             for (int i = 0; i < searchString1.Length; i++)
             {
                 chars1[i] = searchString1[i];
-            }for (int i = 0; i < searchString2.Length; i++)
+            }
+            for (int i = 0; i < searchString2.Length; i++)
             {
                 chars2[i] = searchString2[i];
+            }
+            for (int i = 0; i < searchString3.Length; i++)
+            {
+                chars3[i] = searchString3[i];
             }
             //var chars = "cit_Eviquxyjuzow".ToCharArray();  //75389
             //var chars = "cit_Yzuhurebatot".ToCharArray();  
             var cityArray = Map.SbyteArrayToObject<City>(Array.ConvertAll(chars, Convert.ToSByte));
             var cityArray1 = Map.SbyteArrayToObject<City>(Array.ConvertAll(chars1, Convert.ToSByte));
             var cityArray2 = Map.SbyteArrayToObject<City>(Array.ConvertAll(chars2, Convert.ToSByte));
+            var cityArray3 = Map.SbyteArrayToObject<City>(Array.ConvertAll(chars3, Convert.ToSByte));
 
             stopwatch.Reset();
             stopwatch.Start();
@@ -117,21 +124,24 @@ namespace Infrastructure.Middleware
                 stopwatch.Reset();
                 stopwatch.Start();
                 //var lower = BinarySearcher.LowerBound(Index.AsReadOnlySpan(), Locations.AsReadOnlySpan(), Location.SizeOf, cityArray, new Comparer().);
-                var lowerIndex = BinarySearcher.LowerBoundSearch2(Index.AsReadOnlySpan(), Locations.AsReadOnlySpan(), Location.SizeOf, cityArray);
-                var upperIndex = BinarySearcher.UpperBoundSearch2(Index.AsReadOnlySpan(), Locations.AsReadOnlySpan(), Location.SizeOf, cityArray);
-                if (upperIndex < lowerIndex)
+               
+                var foundIndecies1 = BinarySearcher.BinarySearch(Index.AsReadOnlySpan(), Locations.AsReadOnlySpan(), Location.SizeOf, cityArray1);
+                if (foundIndecies1.Item1 > foundIndecies1.Item2)
                 {
                     throw new SearchNotFoundException();
                 }
-                var lowerIndex1 = BinarySearcher.LowerBoundSearch2(Index.AsReadOnlySpan(), Locations.AsReadOnlySpan(), Location.SizeOf, cityArray1);
-                var upperIndex1 = BinarySearcher.UpperBoundSearch2(Index.AsReadOnlySpan(), Locations.AsReadOnlySpan(), Location.SizeOf, cityArray1);
-                if (upperIndex1 < lowerIndex1)
+                var foundIndecies2 = BinarySearcher.BinarySearch(Index.AsReadOnlySpan(), Locations.AsReadOnlySpan(), Location.SizeOf, cityArray2);
+                if (foundIndecies2.Item1 > foundIndecies2.Item2)
                 {
                     throw new SearchNotFoundException();
                 }
-                var lowerIndex2 = BinarySearcher.LowerBoundSearch2(Index.AsReadOnlySpan(), Locations.AsReadOnlySpan(), Location.SizeOf, cityArray2);
-                var upperIndex2 = BinarySearcher.UpperBoundSearch2(Index.AsReadOnlySpan(), Locations.AsReadOnlySpan(), Location.SizeOf, cityArray2);
-                if (upperIndex2 < lowerIndex2)
+                var foundIndecies = BinarySearcher.BinarySearch(Index.AsReadOnlySpan(), Locations.AsReadOnlySpan(), Location.SizeOf, cityArray);
+                if (foundIndecies.Item1 > foundIndecies.Item2)
+                {
+                    throw new SearchNotFoundException();
+                }
+                var foundIndecies3 = BinarySearcher.BinarySearch(Index.AsReadOnlySpan(), Locations.AsReadOnlySpan(), Location.SizeOf, cityArray3);
+                if (foundIndecies3.Item1 > foundIndecies3.Item2)
                 {
                     throw new SearchNotFoundException();
                 }
