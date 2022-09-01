@@ -3,11 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using Core.Entities.Models.Columns;
 
 namespace Core.Entities.Models
 {
-    public readonly struct Index : IEntity
+    public readonly struct CityIndex : IEntity
     {
-        public readonly uint Offset { get; }
+        public uint Offset { get; }
     }
 }

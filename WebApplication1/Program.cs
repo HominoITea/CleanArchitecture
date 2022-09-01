@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApi
+namespace WebApplication1
 {
     public class Program
     {
@@ -22,6 +22,5 @@ namespace WebApi
                 {
                     webBuilder.UseStartup<Startup>();
                 });
-
     }
 }

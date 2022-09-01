@@ -6,10 +6,10 @@ using System.Text;
 
 namespace Core.Entities
 {
-    public class IpRangesDTO : Entity
+    public class IpRangesDto : Entity
     {        
         public IpRange[] IpRanges { get; }     
-        public IpRangesDTO(IpRange[] dbIpRanges)
+        public IpRangesDto(IpRange[] dbIpRanges)
         {
             IpRanges = dbIpRanges;
         }

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -16,11 +16,18 @@
     <Compile Remove="Entities\GeoDataBinary.cs" />
     <Compile Remove="Entities\LocationChar.cs" />
     <Compile Remove="Entities\LocationFixed.cs" />
-    <Compile Remove="Interfaces\IContext.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Entities\Models\Columns\City.cs.temp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Enum\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
   </ItemGroup>
 
 </Project>
