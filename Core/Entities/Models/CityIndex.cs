@@ -7,7 +7,7 @@ using Core.Entities.Models.Columns;
 
 namespace Core.Entities.Models
 {
-    public readonly struct CityIndex : IEntity
+    public readonly struct CityIndex : IIndex
     {
         public uint Offset { get; }
     }

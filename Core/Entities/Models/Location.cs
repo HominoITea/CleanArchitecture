@@ -22,7 +22,8 @@ namespace Core.Entities.Models
         [FieldOffset(20)]
         private readonly Postal _postal; // почтовый индекс (случайная строка с префиксом "pos_") [12]; 
 
-        [FieldOffset(32)] private readonly City _city; // название города (случайная строка с префиксом "cit_") [24]; 
+        [FieldOffset(32)] 
+        private readonly City _city; // название города (случайная строка с префиксом "cit_") [24]; 
 
         [FieldOffset(56)]
         private readonly Organization _organization; // название организации (случайная строка с префиксом "org_") [32];

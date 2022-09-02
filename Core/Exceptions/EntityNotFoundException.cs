@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Core.Exceptions
 {
-    public class SearchNotFoundException : Exception
+    public class EntityNotFoundException : Exception
     {
-        public SearchNotFoundException() : base()
+        public EntityNotFoundException() : base()
         {
             
         }

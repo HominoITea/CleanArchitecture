@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using Infrastructure.Services.Search;
 using CityIndex = Core.Entities.Models.CityIndex;
 
 namespace Infrastructure.Middleware
@@ -124,32 +125,17 @@ namespace Infrastructure.Middleware
                 stopwatch.Reset();
                 stopwatch.Start();
                 //var lower = BinarySearcher.LowerBound(Index.AsReadOnlySpan(), Locations.AsReadOnlySpan(), Location.SizeOf, cityArray, new Comparer().);
-               
-                var foundIndecies1 = BinarySearcher.BinarySearch(Index.AsReadOnlySpan(), Locations.AsReadOnlySpan(), Location.SizeOf, cityArray1);
-                if (foundIndecies1.Item1 > foundIndecies1.Item2)
-                {
-                    throw new SearchNotFoundException();
-                }
-                var foundIndecies2 = BinarySearcher.BinarySearch(Index.AsReadOnlySpan(), Locations.AsReadOnlySpan(), Location.SizeOf, cityArray2);
-                if (foundIndecies2.Item1 > foundIndecies2.Item2)
-                {
-                    throw new SearchNotFoundException();
-                }
-                var foundIndecies = BinarySearcher.BinarySearch(Index.AsReadOnlySpan(), Locations.AsReadOnlySpan(), Location.SizeOf, cityArray);
-                if (foundIndecies.Item1 > foundIndecies.Item2)
-                {
-                    throw new SearchNotFoundException();
-                }
-                var foundIndecies3 = BinarySearcher.BinarySearch(Index.AsReadOnlySpan(), Locations.AsReadOnlySpan(), Location.SizeOf, cityArray3);
-                if (foundIndecies3.Item1 > foundIndecies3.Item2)
-                {
-                    throw new SearchNotFoundException();
-                }
+                var searchComponents = new SearchComponents<City, Location, CityIndex>(Index.AsReadOnlySpan(), Locations.AsReadOnlySpan(), Location.SizeOf);
+                var foundIndecies1 = IndexLocator.RangeSearch(searchComponents, cityArray1);
+                var foundIndecies2 = IndexLocator.RangeSearch(searchComponents, cityArray2);
+                var foundIndecies = IndexLocator.RangeSearch(searchComponents, cityArray);
+                var foundIndecies3 = IndexLocator.RangeSearch(searchComponents, cityArray3);
+
                 stopwatch.Stop();
                 Trace.WriteLine($"Data found in {stopwatch.ElapsedMilliseconds} ms.");
                 stopwatch.Reset();
             }
-            catch (SearchNotFoundException)
+            catch (EntityNotFoundException)
             {
                 Trace.WriteLine("Object doesn't found");
             }
