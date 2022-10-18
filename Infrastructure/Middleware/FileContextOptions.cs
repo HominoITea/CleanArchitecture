@@ -13,8 +13,8 @@ namespace Infrastructure.Middleware
 {
     public class FileContextOptions
     {
-        internal IByteReader Reader { get; set; }
-        internal IBuffer Buffer { get; set; }
+        public IByteReader Reader { get; set; }
+        public IBuffer Buffer { get; set; }
         public static FileContextOptionsBuilder BuildOptions() => new FileContextOptionsBuilder();
     }
 }

@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Infrastructure.Repository;
 
 namespace WebApi.Endpoints.LocationEndpoint
 {
@@ -20,9 +21,9 @@ namespace WebApi.Endpoints.LocationEndpoint
         .WithResponse<GetByIpLocationResponse>
     {
         private readonly IMapper _mapper;
-        IAsyncRepository<Location> _geoDataRepository;
-        
-        public GetByIp(IAsyncRepository<Location> geoDataRepository, IMapper mapper)
+        private readonly IAsyncRepository<Location> _geoDataRepository;
+
+        public GetByIp(IAsyncRepository<Location> geoDataRepository, IMapper mapper, BinaryRepository<Location> dataRepository)
         {
             _geoDataRepository = geoDataRepository;
             _mapper = mapper;
@@ -38,6 +39,7 @@ namespace WebApi.Endpoints.LocationEndpoint
         public override async Task<ActionResult<GetByIpLocationResponse>> HandleAsync(CancellationToken cancellationToken = default)
         {
             _geoDataRepository.GetIpRange();
+
             //var data = _geoDataRepository.GetData<Location>();
             //var header = await _geoDataRepository.GetHeaderAsync();
             //var ipRange = await _geoDataRepository.GetIpRangeAsync();

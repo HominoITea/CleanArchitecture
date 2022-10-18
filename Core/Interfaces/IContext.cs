@@ -10,6 +10,5 @@ namespace Core.Interfaces
     {
         //public IEnumerable<T> GetAll<T>() where T : class;
         //public Task<T> FindAsync<T>(object[] keyValues) where T : class;
-
     }
 }

@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Core.Entities;
-using Core.Interfaces;
-using System.Linq;
-using System.Threading.Tasks;
-using Core.Entities.Models;
+﻿using Core.Interfaces;
+using System;
 
 namespace Infrastructure.Repository
 {
@@ -45,7 +39,7 @@ namespace Infrastructure.Repository
 
         //public T GetData()
         //{
-        //    return _context.Context.Entity as T;
+        //    return _context.Context.Entity as T;Hello how are you? Is everything fine, I hope
         //}
 
         //public T GetHeader ()

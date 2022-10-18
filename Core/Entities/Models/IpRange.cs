@@ -1,28 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.ComponentModel.DataAnnotations;
-using Core.Interfaces;
-using System.Diagnostics.CodeAnalysis;
+﻿using Core.Interfaces;
+using System;
+using System.Runtime.InteropServices;
 
 namespace Core.Entities.Models
 {
+
+    [StructLayout(LayoutKind.Explicit, Size = 12)]
     public readonly struct IpRange : IEntity, IComparable<uint>
     {
-        public readonly uint IpFrom { get; }
-        public readonly uint IpTo { get; }
-        public readonly uint LocationIndex { get; }
+        [field: FieldOffset(0)]// ReSharper disable once UnassignedGetOnlyAutoProperty
+        public uint IpFrom { get; } 
+
+        [field: FieldOffset(4)] // ReSharper disable once UnassignedGetOnlyAutoProperty
+        public uint IpTo { get; }
+
+        [field: FieldOffset(8)] // ReSharper disable once UnassignedGetOnlyAutoProperty
+        public uint LocationIndex { get; }
+
         public int CompareTo(uint ip)
         {
-            int re = ip.CompareTo(IpTo) ^ ip.CompareTo(IpFrom);
-            if (ip > IpTo)
-            {
+            if (ip > IpTo) 
                 return 1;
-            }
-            if (ip < IpFrom)
-            {
+            if (ip < IpFrom) 
                 return -1;
-            }
             return 0;
         }
     }

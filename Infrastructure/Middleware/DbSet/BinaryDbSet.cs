@@ -8,15 +8,19 @@ namespace Infrastructure.Middleware.DbSet
         protected IByteReader Reader { get; }
         protected BinaryDbSet(in IByteReader reader)
         {
-            Reader = reader;
+            Reader = reader ?? throw new NullReferenceException();
         }
         protected BinaryDbSet(in IByteReader reader, int offset, int rows) 
         {
-            Reader = reader;
-            if (offset == 0) 
+            Reader = reader ?? throw new NullReferenceException();
+            if (offset == 0)
+            {
                 throw new Exception();
-            if (rows == 0) 
+            }
+            if (rows == 0)
+            {
                 throw new Exception();
+            }
         }
     }
 }

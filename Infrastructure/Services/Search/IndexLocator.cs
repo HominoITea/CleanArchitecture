@@ -1,4 +1,5 @@
 ﻿using System;
+using BenchmarkDotNet.Attributes;
 using Core.Exceptions;
 using Core.Interfaces;
 
@@ -21,9 +22,8 @@ namespace Infrastructure.Services.Search
 
             return lowerIndex == components.Indices.Length - 1 ? (lowerIndex, upperIndex) : (lowerIndex, --upperIndex);
         }
-
-        private static int BoundSearch<TKey, TEntity, TIndex>(in SearchComponents<TKey, TEntity, TIndex> components, TKey key, Comparison<int> compareDelegate, 
-            int startIndex = 0) 
+        [Benchmark]
+        private static int BoundSearch<TKey, TEntity, TIndex>(in SearchComponents<TKey, TEntity, TIndex> components, TKey key, Comparison<int> compareDelegate, int startIndex = 0) 
             where TEntity : IComparable<TKey> 
             where TIndex : IIndex
         {
@@ -31,10 +31,10 @@ namespace Infrastructure.Services.Search
             var distance = components.Indices.Length - left;
             while (distance > 0)
             {
-                var middle = distance / 2;
+                var middle = distance >> 1;
                 var current = left + middle;
-                var compared = components.Source[(int)components.Indices[current].Offset / components.EntitySize].CompareTo(key);
-                if (compareDelegate(compared, 0) == 0)
+                var index = (int)components.Indices[current].Offset / components.EntitySize;
+                if (compareDelegate(components.Source[index].CompareTo(key), 0) == 0)
                 {
                     left = ++current;
                     distance -= ++middle;

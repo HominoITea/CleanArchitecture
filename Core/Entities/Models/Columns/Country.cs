@@ -6,24 +6,23 @@ using System.Text;
 namespace Core.Entities.Models.Columns
 {
     [StructLayout(LayoutKind.Explicit, Size = 8)]
-
     public readonly struct Country
     {
         [FieldOffset(0)]
-        public readonly sbyte a;
+        private readonly sbyte _a;
         [FieldOffset(1)]
-        public readonly sbyte b;
+        private readonly sbyte _b;
         [FieldOffset(2)]
-        public readonly sbyte c;
+        private readonly sbyte _c;
         [FieldOffset(3)]
-        public readonly sbyte d;
+        private readonly sbyte _d;
         [FieldOffset(4)]
-        public readonly sbyte e;
+        private readonly sbyte _e;
         [FieldOffset(5)]
-        public readonly sbyte f;
+        private readonly sbyte _f;
         [FieldOffset(6)]
-        public readonly sbyte g;
+        private readonly sbyte _g;
         [FieldOffset(7)]
-        public readonly sbyte h;
+        private readonly sbyte _h;
     }
 }

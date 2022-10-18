@@ -9,68 +9,68 @@ namespace Core.Entities.Models.Columns
     public readonly struct Organization
     {
         [FieldOffset(0)]
-        public readonly sbyte a;
+        private readonly sbyte _a;
         [FieldOffset(1)]
-        public readonly sbyte b;
+        private readonly sbyte _b;
         [FieldOffset(2)]
-        public readonly sbyte c;
+        private readonly sbyte _c;
         [FieldOffset(3)]
-        public readonly sbyte d;
+        private readonly sbyte _d;
         [FieldOffset(4)]
-        public readonly sbyte e;
+        private readonly sbyte _e;
         [FieldOffset(5)]
-        public readonly sbyte f;
+        private readonly sbyte _f;
         [FieldOffset(6)]
-        public readonly sbyte g;
+        private readonly sbyte _g;
         [FieldOffset(7)]
-        public readonly sbyte h;
+        private readonly sbyte _h;
         [FieldOffset(8)]
-        public readonly sbyte i;
+        private readonly sbyte _i;
         [FieldOffset(9)]
-        public readonly sbyte j;
+        private readonly sbyte _j;
         [FieldOffset(10)]
-        public readonly sbyte k;
+        private readonly sbyte _k;
         [FieldOffset(11)]
-        public readonly sbyte l;
+        private readonly sbyte _l;
         [FieldOffset(12)]
-        public readonly sbyte m;
+        private readonly sbyte _m;
         [FieldOffset(13)]
-        public readonly sbyte n;
+        private readonly sbyte _n;
         [FieldOffset(14)]
-        public readonly sbyte o;
+        private readonly sbyte _o;
         [FieldOffset(15)]
-        public readonly sbyte p;
+        private readonly sbyte _p;
         [FieldOffset(16)]
-        public readonly sbyte r;
+        private readonly sbyte _r;
         [FieldOffset(17)]
-        public readonly sbyte s;
+        private readonly sbyte _s;
         [FieldOffset(18)]
-        public readonly sbyte t;
+        private readonly sbyte _t;
         [FieldOffset(19)]
-        public readonly sbyte q;
+        private readonly sbyte _q;
         [FieldOffset(20)]
-        public readonly sbyte u;
+        private readonly sbyte _u;
         [FieldOffset(21)]
-        public readonly sbyte v;
+        private readonly sbyte _v;
         [FieldOffset(22)]
-        public readonly sbyte w;
+        private readonly sbyte _w;
         [FieldOffset(23)]
-        public readonly sbyte x;
+        private readonly sbyte _x;
         [FieldOffset(24)]
-        public readonly sbyte y;
+        private readonly sbyte _y;
         [FieldOffset(25)]
-        public readonly sbyte z;
+        private readonly sbyte _z;
         [FieldOffset(26)]
-        public readonly sbyte aa;
+        private readonly sbyte _aa;
         [FieldOffset(27)]
-        public readonly sbyte ab;
+        private readonly sbyte _ab;
         [FieldOffset(28)]
-        public readonly sbyte ac;
+        private readonly sbyte _ac;
         [FieldOffset(29)]
-        public readonly sbyte ad;
+        private readonly sbyte _ad;
         [FieldOffset(30)]
-        public readonly sbyte ae;
+        private readonly sbyte _ae;
         [FieldOffset(31)]
-        public readonly sbyte af;
+        private readonly sbyte _af;
     }
 }

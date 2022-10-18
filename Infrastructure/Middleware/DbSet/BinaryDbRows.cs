@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Immutable;
-using Core.Interfaces;
+﻿using Core.Interfaces;
+using System;
 using System.Linq;
-using Core.Entities.Models;
 
 namespace Infrastructure.Middleware.DbSet
 {
@@ -10,12 +8,11 @@ namespace Infrastructure.Middleware.DbSet
     {
         private readonly TEntity[] _data;
 
-        public BinaryDbRows(in IByteReader reader, int offset, int rows) : base(in reader, offset, rows) => _data = Reader.BufferToStructArray<TEntity>(offset, rows).ToArray();
+        public BinaryDbRows(in IByteReader reader, int offset, int rows) : base(in reader, offset, rows) => 
+            _data = Reader.BufferToStructArray<TEntity>(offset, rows).ToArray();
 
         public ReadOnlySpan<TEntity> AsReadOnlySpan() => new ReadOnlySpan<TEntity>(_data);
 
-        public IQueryable<TEntity> AsQueryable() => _data.AsQueryable();
-        
         public TEntity this[int index] => _data[index];
 
         public ReadOnlySpan<TEntity> AsSorted<TKey>(Func<TEntity, TKey> sortingFunc) => _data.OrderBy(sortingFunc).ToArray();
