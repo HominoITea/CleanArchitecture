@@ -3,13 +3,13 @@ using Core.Interfaces;
 
 namespace Infrastructure.Middleware.DbSet
 {
-    public class BinaryDbHeader<THeader> : BinaryDbSet where THeader : struct, IHeader
+    public class BinaryDbHeader<THeader> where THeader : struct, IHeader
     {
-        private readonly THeader _data;
+        private readonly THeader _data; 
 
-        public BinaryDbHeader(in IByteReader reader) : base(in reader)
+        public BinaryDbHeader(in IByteReader reader)
         {
-            _data = Reader.HeaderToStruct<THeader>();
+            _data = reader.HeaderToStruct<THeader>();
         }
 
         public int Records => _data.Records;

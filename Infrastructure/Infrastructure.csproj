@@ -16,6 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Db\DbTypes.cs" />
     <Compile Remove="Repository\BufferedDbSet.cs" />
     <Compile Remove="Readers\BufferedReader.cs" />
     <Compile Remove="Repository\GeoDataRepository.cs" />

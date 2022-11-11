@@ -4,12 +4,21 @@ using System.Linq;
 
 namespace Infrastructure.Middleware.DbSet
 {
-    public class BinaryDbRows<TEntity> : BinaryDbSet where TEntity : struct, IEntity
+    public class BinaryDbRows<TEntity> where TEntity : struct, IEntity
     {
         private readonly TEntity[] _data;
 
-        public BinaryDbRows(in IByteReader reader, int offset, int rows) : base(in reader, offset, rows) => 
-            _data = Reader.BufferToStructArray<TEntity>(offset, rows).ToArray();
+        public BinaryDbRows(in IByteReader reader, int offset, int rows)
+        {
+            if (offset == 0 || rows == 0)
+            {
+                throw new Exception();
+            }
+
+            _data = reader
+                .BufferToStructArray<TEntity>(offset, rows)
+                .ToArray();
+        }
 
         public ReadOnlySpan<TEntity> AsReadOnlySpan() => new ReadOnlySpan<TEntity>(_data);
 

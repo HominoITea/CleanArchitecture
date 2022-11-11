@@ -13,13 +13,18 @@ using BenchmarkDotNet.Attributes;
 namespace Infrastructure.Middleware
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class FileContext : IContext
+    public class FileContext : IContext // сделать абстрактный класс который наследуется от IContext
     {
         public BinaryDbHeader<Header> Header { get; private set; }
         public BinaryDbRows<IpRange> IpRanges { get; private set; }
         public BinaryDbRows<Location> Locations { get; private set; }
         public BinaryDbRows<CityIndex> Index { get; private set; }
 
+        //Сделать Dictionary для хранения информации заголовков LocationOffset IpRangeOffset CityIndexOffset. в DinaryDbHeader
+        //Написать дженерик метод для отдачи этих заголовков DinaryDbHeader
+        //Сделать отдельный Reader для Header и отдавать его как Options в FileByteReader.
+        //Из FileByteReader убрать метод HeaderToStruct<T>() и перенести в новый Reader
+        //В FileContext убрать Header, его инициилизировать отдельно и данные от него передавать как Options
 
         public FileContext(FileContextOptions options)
         {
@@ -30,10 +35,10 @@ namespace Infrastructure.Middleware
         private void Initialize(FileContextOptions options)
         {
             //var stopwatch = Stopwatch.StartNew();
-            using (options.Reader)
+            using (options.Reader) //Реализовать через позднее связывание, сделть фабрику. 
             {
                 Header = new BinaryDbHeader<Header>(options.Reader);
-                IpRanges = new BinaryDbRows<IpRange>(options.Reader, Header.IpRangeOffset, Header.Records);
+                IpRanges = new BinaryDbRows<IpRange>(options.Reader, Header.GetOffset<IpRange>(), Header.Records);
                 Locations = new BinaryDbRows<Location>(options.Reader, Header.LocationOffset, Header.Records);
                 Index = new BinaryDbRows<CityIndex>(options.Reader, Header.CityIndexOffset, Header.Records);
             }

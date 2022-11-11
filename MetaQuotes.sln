@@ -23,7 +23,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{2B78CC56-3
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "tests\UnitTests\UnitTests.csproj", "{7E4E0904-2B8B-490F-9932-5B2353614085}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmarker", "Benchmarker\Benchmarker.csproj", "{923C94BD-D70B-4AB8-81C7-5CDFB50AB9C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchmarker", "Benchmarker\Benchmarker.csproj", "{923C94BD-D70B-4AB8-81C7-5CDFB50AB9C9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "db", "db", "{62BCB229-5713-48E3-9820-9AC2BC370B9E}"
+	ProjectSection(SolutionItems) = preProject
+		Infrastructure\Db\geobase.dat = Infrastructure\Db\geobase.dat
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
